@@ -15,7 +15,8 @@ get('/', 'controllers/basePageController.php');
 get('/$page_name', 'controllers/basePageController.php');
 
 get('/product/$ProductID', 'controllers/getProductById.php');
-// post('/checkout-items', 'controllers/checkout.php');
+get('/reservation/$car_id', 'controllers/getReservationById.php');
+post('/rent', 'controllers/rent.php');
 
 
 get('/404', 'views/404.php');

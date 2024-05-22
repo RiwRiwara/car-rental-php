@@ -1,4 +1,5 @@
 tailwind.config = {
+  content : [ './src/**/*.html', './src/**/*.php', './src/**/*.html'],
   theme: {
     extend: {
       colors: {

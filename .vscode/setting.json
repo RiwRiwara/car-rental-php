@@ -1,0 +1,13 @@
+{
+    "tailwindCSS.includeLanguages": {
+      "plaintext": "html",
+      "html": "html",
+      "php": "html",
+      "javascript": "javascript"
+    },
+    "tailwindCSS.emmetCompletions": true,
+    "tailwindCSS.experimental.classRegex": [
+      ["class\\s*:\\s*['\"]([^'\"]*)['\"]", "html"]
+    ]
+  }
+  
