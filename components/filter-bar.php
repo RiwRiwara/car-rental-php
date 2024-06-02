@@ -6,14 +6,22 @@ $year_list = array(
 
 $car_types = array("sedan", "suv", "hatchback", "truck");
 $car_brand = array("Toyota", "Honda", "Nissan", "Mitsubishi");
+
+// Function to get recent searches
+function get_recent_searches() {
+    // Fetch recent searches from a database or session
+    // Here we just return a static array for demonstration
+    return array("Toyota sedan 2020", "Honda SUV 2019", "Nissan hatchback 2018");
+}
+
+$recent_searches = get_recent_searches();
 ?>
 
 <div class="w-full">
-    <!-- Start coding here -->
     <div class="relative bg-primary-800 shadow-md dark:bg-gray-800 sm:rounded-lg">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
             <div class="w-full md:w-1/2">
-                <form class="flex items-center">
+                <form class="flex items-center" method="GET" action="">
                     <label for="search" class="sr-only">Search</label>
                     <div class="relative w-full">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -24,45 +32,39 @@ $car_brand = array("Toyota", "Honda", "Nissan", "Mitsubishi");
                         <input 
                         value="<?= isset($_GET['search']) ? $_GET['search'] : "" ?>"
                         name="search" type="text" id="search" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="">
+                        <div id="recent-searches" class="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-700 dark:border-gray-600 hidden">
+                            <ul>
+                                <?php foreach ($recent_searches as $search) : ?>
+                                    <li class="p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"><?= $search ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-
                 <div class="flex items-center w-full space-x-3 md:w-auto">
-
                     <select id="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option <?php if (!isset($_GET['type'])) : ?> selected <?php endif; ?>>All</option>
-                        >All</option>
                         <?php foreach ($car_types as $type) : ?>
                             <option <?php if (isset($_GET['type']) && $_GET['type'] == $type) : ?> selected <?php endif; ?> value="<?= $type ?>"><?= ucfirst($type) ?></option>
                         <?php endforeach; ?>
-
                     </select>
-
-
                     <select id="brand" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option <?php if (!isset($_GET['brand'])) : ?> selected <?php endif; ?>>All</option>
-                        >All</option>
                         <?php foreach ($car_brand as $brand) : ?>
                             <option <?php if (isset($_GET['brand']) && $_GET['brand'] == $brand) : ?> selected <?php endif; ?> value="<?= $brand ?>"><?= $brand ?></option>
                         <?php endforeach; ?>
-
                     </select>
-
-
                     <select id="year" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option <?php if (!isset($_GET['year'])) : ?> selected <?php endif; ?>>All</option>
                         <?php foreach ($year_list as $year) : ?>
                             <option <?php if (isset($_GET['year']) && $_GET['year'] == $year) : ?> selected <?php endif; ?> value="<?= $year ?>"><?= $year ?></option>
                         <?php endforeach; ?>
-
                     </select>
-
                     <a href="/" class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                         Clear
                     </a>
-
                 </div>
             </div>
         </div>
@@ -87,15 +89,35 @@ $car_brand = array("Toyota", "Honda", "Nissan", "Mitsubishi");
             window.location.href = '?' + queryString;
         }
 
+        $('#search').on('input', function() {
+            if ($(this).val()) {
+                $('#recent-searches').removeClass('hidden');
+            } else {
+                $('#recent-searches').addClass('hidden');
+            }
+        });
+
         $('#search').on('keypress', function(e) {
-            if (e.which == 13) { 
-                e.preventDefault(); 
+            if (e.which == 13) {
+                e.preventDefault();
                 updateUrl();
             }
         });
 
         $('#type, #brand, #year').on('change', function() {
             updateUrl();
+        });
+
+        $('#recent-searches li').on('click', function() {
+            $('#search').val($(this).text());
+            $('#recent-searches').addClass('hidden');
+            updateUrl();
+        });
+
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('#search, #recent-searches').length) {
+                $('#recent-searches').addClass('hidden');
+            }
         });
     });
 </script>

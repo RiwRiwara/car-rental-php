@@ -39,46 +39,33 @@
 
 
           <div class="grid grid-cols-4 gap-8">
+
             <?php foreach ($filteredCars as $car) : ?>
-              <div class="bg-white  rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-2 hover:scale-105 duration-300  ease-in-out">
+              <div class="bg-white rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-2 hover:scale-105 duration-300 ease-in-out">
                 <a href="#" class="relative inline-flex ">
                   <div class="absolute inline-flex items-center justify-center w-10 h-6 text-xs font-bold text-white border-2 border-white rounded-full -top-2 -end-0 ">
                     <?php if ($car['availability'] === 'Yes') : ?>
-
                       <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full animate-pulse">
                         <span class="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
-                        <span>
-                          Available
-                        </span>
+                        <span>Available</span>
                       </span>
                     <?php else : ?>
-
                       <span class="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
                         <span class="w-2 h-2 me-1 bg-red-500 rounded-full"></span>
                         Unavailable
                       </span>
-
                     <?php endif; ?>
-
-
                   </div>
                   <img class="w-full rounded-lg" src="<?= $car['image'] ?>" alt="product image" style="height: 250px;" onerror="this.onerror=null;this.src='public/images/mockup.jpg';" />
                 </a>
                 <div class="px-5 pb-2 mt-4">
-                  <div class="flex flex-row gap-2">
-                    <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-                      <?= $car['brand'] ?>
-                    </span>
-                    <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
-                      <?= $car['type'] ?>
-                    </span>
-                  </div>
+
+
                   <a href="#">
                     <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white my-2">
                       <?= $car['car_model'] . " " . $car['year'] ?>
                     </h5>
                   </a>
-
                   <div class="flex items-center justify-between">
                     <span class="text-2xl font-bold text-gray-900 dark:text-white">
                       $ <?= $car['price_per_day'] ?> <span class="text-lg font-medium">per day</span>
@@ -90,12 +77,41 @@
                     <?php else : ?>
                       <!-- <button class="text-white bg-gray-400 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-500">
                         Rent
-                      </button> -->
+                    </button> -->
                     <?php endif; ?>
+                  </div>
+                  <div class="mt-2">
+                    <button class="collapse-btn text-blue-600 hover:text-blue-800">
+                      <i class="fas fa-chevron-down"></i> More details
+                    </button>
+                    <div class="collapse-content hidden">
+                      <p class="text-gray-600 dark:text-gray-400">
+                      <div class="flex flex-row gap-2 py-4">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+                          <?= $car['brand'] ?>
+                        </span>
+                        <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
+                          <?= $car['type'] ?>
+                        </span>
+
+                      </div>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             <?php endforeach; ?>
+
+            <script>
+              document.querySelectorAll('.collapse-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                  const content = button.nextElementSibling;
+                  content.classList.toggle('hidden');
+                  button.querySelector('i').classList.toggle('fa-chevron-down');
+                  button.querySelector('i').classList.toggle('fa-chevron-up');
+                });
+              });
+            </script>
           </div>
 
 
